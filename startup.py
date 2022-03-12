@@ -87,6 +87,7 @@ def auto_install_repo():
                         logging.log(str(e), level=xbmc.LOGERROR)
 
                     # Add wizard to add-on database
+                    logging.log("addon_database1: " + str(CONFIG.REPOID) , level=xbmc.LOGDEBUG)
                     db.addon_database(CONFIG.REPOID, 1)
 
                     progress_dialog.close()

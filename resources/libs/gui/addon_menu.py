@@ -203,6 +203,7 @@ class AddonMenu:
                         name2 = tools.get_addon_info(add, 'name')
                     except:
                         db.create_temp(depends)
+                        logging.log("addon_database6: " + str(depends) , level=xbmc.LOGDEBUG)
                         db.addon_database(depends, 1)
 
     def install_addon_from_url(self, plugin, url):
@@ -244,6 +245,7 @@ class AddonMenu:
         installed(plugin)
         installlist = db.grab_addons(lib)
         logging.log(str(installlist))
+        logging.log("addon_database7: " + str(installlist) , level=xbmc.LOGDEBUG)
         db.addon_database(installlist, 1, True)
         self.install_dependency(plugin)
         self.progress_dialog.close()
@@ -297,6 +299,7 @@ class AddonMenu:
                 if version:
                     repozip = '{0}{1}-{2}.zip'.format(urls[2], repo_id, version)
                     logging.log(repozip)
+                    logging.log("addon_database8: " + str(repo_id) , level=xbmc.LOGDEBUG)
                     db.addon_database(repo_id, 1)
                     self.install_addon(repo_id, repozip, over=True)
                     xbmc.executebuiltin('UpdateAddonRepos()')
@@ -332,6 +335,7 @@ class AddonMenu:
             if version > 0:
                 url = "{0}{1}-{2}.zip".format(urls[0], plugin, version)
                 logging.log(str(url))
+                logging.log("addon_database9: " + str(plugin) , level=xbmc.LOGDEBUG)
                 db.addon_database(plugin, 1)
                 self.install_addon_from_url(plugin, url)
                 xbmc.executebuiltin('Container.Refresh()')
@@ -372,6 +376,7 @@ class AddonMenu:
         progress_dialog.update(0, title, '', '[COLOR {0}]Please Wait[/COLOR]'.format(CONFIG.COLOR2))
         percent, errors, error = extract.all(lib, CONFIG.ADDONS, title=title)
         installed = db.grab_addons(lib)
+        logging.log("addon_database10: " + str(installed) , level=xbmc.LOGDEBUG)
         db.addon_database(installed, 1, True)
         progress_dialog.close()
         logging.log_notify("[COLOR {0}]Addon Installer[/COLOR]".format(CONFIG.COLOR1),
@@ -416,6 +421,7 @@ class AddonMenu:
         progress_dialog.update(0, title, '', '[COLOR {0}]Please Wait[/COLOR]'.format(CONFIG.COLOR2))
         percent, errors, error = extract.all(lib, CONFIG.HOME, title=title)
         installed = db.grab_addons(lib)
+        logging.log("addon_database11: " + str(installed) , level=xbmc.LOGDEBUG)
         db.addon_database(installed, 1, True)
         progress_dialog.close()
         logging.log_notify("[COLOR {0}]Addon Installer[/COLOR]".format(CONFIG.COLOR1),

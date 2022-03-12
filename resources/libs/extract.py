@@ -56,6 +56,8 @@ def all_with_progress(_in, _out, dp, ignore, title):
         logging.log('Error Checking Zip: {0}'.format(str(e)), level=xbmc.LOGERROR)
         return update, errors, error
 
+
+
     white_list = whitelist.whitelist('read')
     for item in white_list:
         try:
@@ -68,6 +70,7 @@ def all_with_progress(_in, _out, dp, ignore, title):
     zipsize = tools.convert_size(sum([item.file_size for item in zin.infolist()]))
 
     zipit = str(_in).replace('\\', '/').split('/')
+    buildname = zipit[-1].replace('.zip', '')
     title = title if title else zipit[-1].replace('.zip', '')
 
     for item in zin.infolist():
@@ -81,75 +84,79 @@ def all_with_progress(_in, _out, dp, ignore, title):
             logging.log("[ASCII Check] Illegal character found in file: {0}".format(item.filename))
             continue
             
-        count += 1
-        prog = int(count / nFiles * 100)
-        size += item.file_size
-        file = str(item.filename).split('/')
-        skip = False
-        
-        line1 = '{0} [COLOR {1}][B][Errors:{2}][/B][/COLOR]'.format(title,
-                                                                    CONFIG.COLOR2,
-                                                                    errors)
-        line2 = '[COLOR {0}][B]File:[/B][/COLOR] [COLOR {1}]{2}/{3}[/COLOR] '.format(CONFIG.COLOR2,
-                                                                                     CONFIG.COLOR1,
-                                                                                     count,
-                                                                                     int(nFiles))
-        line2 += '[COLOR {0}][B]Size:[/B][/COLOR] [COLOR {1}]{2}/{3}[/COLOR]'.format(CONFIG.COLOR2,
-                                                                                     CONFIG.COLOR1,
-                                                                                     tools.convert_size(size),
-                                                                                     zipsize)
-        line3 = '[COLOR {0}]{1}[/COLOR]'.format(CONFIG.COLOR1, item.filename)
-        
-        if item.filename == 'userdata/sources.xml' and CONFIG.KEEPSOURCES == 'true':
-            skip = True
-        elif item.filename == 'userdata/favourites.xml' and CONFIG.KEEPFAVS == 'true':
-            skip = True
-        elif item.filename == 'userdata/profiles.xml' and CONFIG.KEEPPROFILES == 'true':
-            skip = True
-        elif item.filename == 'userdata/guisettings.xml' and CONFIG.KEEPGUISETTINGS == 'true':
-            skip = True
-        elif item.filename == 'userdata/playercorefactory.xml' and CONFIG.KEEPPLAYERCORE == 'true':
-            skip = True
-        elif item.filename == 'userdata/advancedsettings.xml' and CONFIG.KEEPADVANCED == 'true':
-            skip = True
-        elif file[0] == 'addons' and file[1] in excludes:
-            skip = True
-        elif file[0] == 'userdata' and file[1] == 'addon_data' and file[2] in excludes:
-            skip = True
-        elif file[-1] in CONFIG.LOGFILES:
-            skip = True
-        elif file[-1] in CONFIG.EXCLUDE_FILES:
-            skip = True
-        elif file[-1].endswith('.csv'):
-            skip = True
-        elif not str(item.filename).find('plugin.program.super.favourites') == -1 and CONFIG.KEEPSUPER == 'true':
-            skip = True
-        elif not str(item.filename).find(CONFIG.ADDON_ID) == -1 and ignore is None:
-            skip = True
-        if skip:
-            logging.log("Skipping: {0}".format(item.filename))
-        else:
-            try:
-                zin.extract(item, _out)
-            except Exception as e:
-                errormsg = "[COLOR {0}]File:[/COLOR] [COLOR {1}]{2}[/COLOR]\n".format(CONFIG.COLOR2,
-                                                                                      CONFIG.COLOR1,
-                                                                                      file[-1])
-                errormsg += "[COLOR {0}]Folder:[/COLOR] [COLOR {1}]{2}[/COLOR]\n".format(CONFIG.COLOR2,
+        dbg = item.filename
+        dbg = dbg.replace(buildname + '/', '')
+        item.filename = dbg
+        if len(item.filename) > 0:
+            count += 1
+            prog = int(count / nFiles * 100)
+            size += item.file_size
+            file = str(item.filename).split('/')
+            skip = False
+            
+            line1 = '{0} [COLOR {1}][B][Errors:{2}][/B][/COLOR]'.format(title,
+                                                                        CONFIG.COLOR2,
+                                                                        errors)
+            line2 = '[COLOR {0}][B]File:[/B][/COLOR] [COLOR {1}]{2}/{3}[/COLOR] '.format(CONFIG.COLOR2,
                                                                                          CONFIG.COLOR1,
-                                                                                         item.filename.replace(file[-1], ''))
-                errormsg += "[COLOR {0}]Error:[/COLOR] [COLOR {1}]{2}[/COLOR]\n\n".format(CONFIG.COLOR2,
+                                                                                         count,
+                                                                                         int(nFiles))
+            line2 += '[COLOR {0}][B]Size:[/B][/COLOR] [COLOR {1}]{2}/{3}[/COLOR]'.format(CONFIG.COLOR2,
+                                                                                         CONFIG.COLOR1,
+                                                                                         tools.convert_size(size),
+                                                                                         zipsize)
+            line3 = '[COLOR {0}]{1}[/COLOR]'.format(CONFIG.COLOR1, item.filename)
+            
+            if item.filename == 'userdata/sources.xml' and CONFIG.KEEPSOURCES == 'true':
+                skip = True
+            elif item.filename == 'userdata/favourites.xml' and CONFIG.KEEPFAVS == 'true':
+                skip = True
+            elif item.filename == 'userdata/profiles.xml' and CONFIG.KEEPPROFILES == 'true':
+                skip = True
+            elif item.filename == 'userdata/guisettings.xml' and CONFIG.KEEPGUISETTINGS == 'true':
+                skip = True
+            elif item.filename == 'userdata/playercorefactory.xml' and CONFIG.KEEPPLAYERCORE == 'true':
+                skip = True
+            elif item.filename == 'userdata/advancedsettings.xml' and CONFIG.KEEPADVANCED == 'true':
+                skip = True
+            elif file[0] == 'addons' and file[1] in excludes:
+                skip = True
+            elif file[0] == 'userdata' and file[1] == 'addon_data' and file[2] in excludes:
+                skip = True
+            elif file[-1] in CONFIG.LOGFILES:
+                skip = True
+            elif file[-1] in CONFIG.EXCLUDE_FILES:
+                skip = True
+            elif file[-1].endswith('.csv'):
+                skip = True
+            elif not str(item.filename).find('plugin.program.super.favourites') == -1 and CONFIG.KEEPSUPER == 'true':
+                skip = True
+            elif not str(item.filename).find(CONFIG.ADDON_ID) == -1 and ignore is None:
+                skip = True
+            if skip:
+                logging.log("Skipping: {0}".format(item.filename))
+            else:
+                try:
+                    zin.extract(item, _out)
+                except Exception as e:
+                    errormsg = "[COLOR {0}]File:[/COLOR] [COLOR {1}]{2}[/COLOR]\n".format(CONFIG.COLOR2,
                                                                                           CONFIG.COLOR1,
-                                                                                          str(e).replace('\\\\', '\\')
-                                                                                          .replace("'{0}'"
-                                                                                          .format(item.filename), ''))
-                errors += 1
-                error += errormsg
-                logging.log('Error Extracting: {0}({1})'.format(item.filename, str(e)), level=xbmc.LOGERROR)
-                pass
-        dp.update(prog, line1, line2, line3)
-        if dp.iscanceled():
-            break
+                                                                                          file[-1])
+                    errormsg += "[COLOR {0}]Folder:[/COLOR] [COLOR {1}]{2}[/COLOR]\n".format(CONFIG.COLOR2,
+                                                                                             CONFIG.COLOR1,
+                                                                                             item.filename.replace(file[-1], ''))
+                    errormsg += "[COLOR {0}]Error:[/COLOR] [COLOR {1}]{2}[/COLOR]\n\n".format(CONFIG.COLOR2,
+                                                                                              CONFIG.COLOR1,
+                                                                                              str(e).replace('\\\\', '\\')
+                                                                                              .replace("'{0}'"
+                                                                                              .format(item.filename), ''))
+                    errors += 1
+                    error += errormsg
+                    logging.log('Error Extracting: {0}({1})'.format(item.filename, str(e)), level=xbmc.LOGERROR)
+                    pass
+            dp.update(prog, line1, line2, line3)
+            if dp.iscanceled():
+                break
             
     if dp.iscanceled():
         dp.close()

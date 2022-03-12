@@ -59,6 +59,7 @@ def wipe():
 
     exclude_dirs = CONFIG.EXCLUDES
     exclude_dirs.append('My_Builds')
+    exclude_dirs.append('.git')
     
     progress_dialog = xbmcgui.DialogProgress()
     

@@ -168,6 +168,9 @@ class Wizard:
                 if themecount > 0:
                     self.theme(name)
 
+                # import web_pdb; web_pdb.set_trace()
+                dbg = CONFIG.ADDON_ID
+                logging.log("addon_database3: " + str(CONFIG.ADDON_ID) , level=xbmc.LOGDEBUG)
                 db.addon_database(CONFIG.ADDON_ID, 1)
                 db.force_check_updates(over=True)
 
@@ -234,6 +237,7 @@ class Wizard:
             skin.skin_to_default('Build Install')
             skin.look_and_feel_data('save')
             installed = db.grab_addons(lib)
+            logging.log("addon_database4: " + str(installed) , level=xbmc.LOGDEBUG)
             db.addon_database(installed, 1, True)
 
             self.dialog.ok(CONFIG.ADDONTITLE, "[COLOR {0}]To save changes you now need to force close Kodi, Press OK to force close Kodi[/COLOR]".format(CONFIG.COLOR2))
@@ -346,6 +350,7 @@ class Wizard:
 
             db.force_check_updates(over=True)
             installed = db.grab_addons(lib)
+            logging.log("addon_database5: " + str(installed) , level=xbmc.LOGDEBUG)
             db.addon_database(installed, 1, True)
 
             if test2:

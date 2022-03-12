@@ -234,6 +234,7 @@ def kodi_17_fix():
                 except:
                     logging.log("Unable to enable: {0}".format(folder), level=xbmc.LOGERROR)
     if len(disabledAddons) > 0:
+        logging.log("addon_database2: " + str(disabledAddons) , level=xbmc.LOGDEBUG)
         addon_database(disabledAddons, 1, True)
         logging.log_notify(CONFIG.ADDONTITLE,
                            "[COLOR {0}]Enabling Addons Complete![/COLOR]".format(CONFIG.COLOR2))
