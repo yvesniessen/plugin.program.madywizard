@@ -16,20 +16,23 @@ ART = os.path.join(PATH, 'resources', 'media')
 ADDONTITLE = '[COLOR limegreen][B]Open[/B][/COLOR]Wizard'
 BUILDERNAME = 'OpenWizard'
 EXCLUDES = [ADDON_ID, 'repository.openwizard']
-# Text File with build info in it. Please read https://github.com/a4k-openproject/plugin.program.openwizard/wiki/Installing-Builds
-BUILDFILE = 'http://'
+# Text File with build info in it.
+
+BUILDFILE      = 'https://raw.githubusercontent.com/yvesniessen/repository.mad-build/master/build/txt-files/builds.txt'
 # How often you would like it to check for build updates in days
 # 0 being every startup of kodi
-UPDATECHECK = 0
+UPDATECHECK    = 0
 # Text File with apk info in it.  Leave as 'http://' to ignore
-APKFILE = 'http://'
+APKFILE        = 'https://raw.githubusercontent.com/yvesniessen/repository.mad-build/master/build/txt-files/apks.txt'
 # Text File with Youtube Videos urls.  Leave as 'http://' to ignore
-YOUTUBETITLE = ''
-YOUTUBEFILE = 'http://'
+YOUTUBETITLE   = 'Youtube White Rabbit Productions'
+YOUTUBEFILE    = 'https://raw.githubusercontent.com/yvesniessen/repository.mad-build/master/build/txt-files/youtube.txt'
 # Text File for addon installer.  Leave as 'http://' to ignore
-ADDONFILE = 'http://'
+ADDONFILE      = 'https://raw.githubusercontent.com/yvesniessen/repository.mad-build/master/build/txt-files/addons.txt'
 # Text File for advanced settings.  Leave as 'http://' to ignore
-ADVANCEDFILE = 'http://'
+ADVANCEDFILE   = 'https://raw.githubusercontent.com/yvesniessen/repository.mad-build/master/build/txt-files/advanced.txt'
+ROMPACK        = 'https://raw.githubusercontent.com/yvesniessen/repository.mad-build/master/build/txt-files/roms.txt'
+EMUAPKS        = 'https://raw.githubusercontent.com/yvesniessen/repository.mad-build/master/build/txt-files/emuapks.txt'
 #########################################################
 
 #########################################################
