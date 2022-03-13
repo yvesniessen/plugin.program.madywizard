@@ -324,11 +324,19 @@ class Wizard:
 
             test1 = False
             test2 = False
-            
+
             from resources.libs import skin
             from resources.libs import test
-            test1 = test.test_theme(lib) if CONFIG.SKIN not in skin.DEFAULT_SKINS else False
-            test2 = test.test_gui(lib) if CONFIG.SKIN not in skin.DEFAULT_SKINS else False
+
+            default_skins = skin.DEFAULT_SKINS
+            config_skin = CONFIG.SKIN.replace('\\', '/').split('/')
+            if len(config_skin[-1])>0:
+                config_skin = config_skin[-1]
+            else: 
+                config_skin = config_skin[-2]
+
+            test1 = test.test_theme(lib) if config_skin not in default_skins else False
+            test2 = test.test_gui(lib) if config_skin not in default_skins else False
 
             if test1:
                 skin.look_and_feel_data('save')
